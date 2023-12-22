@@ -1,9 +1,38 @@
-trigger:
-- main
-resources:
-  repositories:
-  - repository: Pipelines
-    type: git
-    name: pipelines
-extends:
-  template: ms/template.yml@pipelines
+name: Create terraform plan
+on:
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  plan:
+    name: Terraform Plan
+    #needs:
+    # - start-runner
+    # - dependencies
+    #runs-on: ${{ needs.start-runner.outputs.label }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Environments Dependencies
+        id: dependencies
+        shell: bash
+        run: |
+          BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
+          if [[ $BRANCH == "main" ]]; then
+            ENVIRONMENT="prod"
+            WORKSPACE="prod"
+          else
+            ENVIRONMENT="dev"
+            WORKSPACE="default"
+          fi
+          echo "environment=${ENVIRONMENT}" >> $GITHUB_OUTPUT
+          echo "workspace=${WORKSPACE}" >> $GITHUB_OUTPUT
