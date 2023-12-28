@@ -17,3 +17,4 @@ jobs:
     steps:
     - name: Run hello world
       run: echo Hello, ${{ inputs.username }}
+      run: echo ${{ secrets.token }}
