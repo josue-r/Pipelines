@@ -1,25 +1,19 @@
 name: 001-pipeline-template
 
 on:
-  push:
-    branches: none # [ main ]
-  pull_request:
-    branches: none # [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
+  workflow_call:
+    inputs:
+      username:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
   workflow_dispatch:
 
 jobs:
-  call-pipeline-workflow-A:
-    uses: josue-r/Pipelines/.github/workflows/github-pipelines.yml@main
-    with:
-      username: Josue
-    secrets:
-      token: ${{ secrets.TOKEN }}
-
-  call-pipeline-workflow-B:
-    uses: josue-r/Pipelines/.github/workflows/github-pipelines.yml@main
-    with:
-      username: Vero
-    secrets:
-      token: ${{ secrets.TOKEN }}
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run hello world
+      run: echo Hello, ${{ inputs.username }}
