@@ -9,7 +9,6 @@ on:
     secrets:
       token:
         required: true
-        type: string
   workflow_dispatch:
 
 jobs:
@@ -17,4 +16,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Run hello world
-      run: echo Hello, ${{ inputs.username }} && echo ${{ secrets.token }}
+      run: echo Hello, ${{ inputs.username }} && echo ${{ inputs.lastname }}
