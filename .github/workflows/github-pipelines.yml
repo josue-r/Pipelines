@@ -16,5 +16,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Run hello world
-      run: echo Hello, ${{ inputs.username }}
-      run: echo ${{ secrets.token }}
+      run: echo Hello, ${{ inputs.username }} && echo ${{ secrets.token }}
