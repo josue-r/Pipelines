@@ -1,0 +1,16 @@
+name: RELEASE
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+
+jobs:
+  triage:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run hello release
+      run: echo Hello, release

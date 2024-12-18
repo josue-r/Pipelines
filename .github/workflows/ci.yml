@@ -1,0 +1,12 @@
+name: CI
+
+on:
+  workflow_call:
+
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run hello ci
+      run: echo Hello, ci yaml
