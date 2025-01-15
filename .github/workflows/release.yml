@@ -4,7 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       port:
-        type: string
+        type: choice
+        options:
+          - qa
+          - prod
       tags:
         type: string
   workflow_call:
