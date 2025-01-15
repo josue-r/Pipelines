@@ -23,9 +23,10 @@ on:
         type: string
 
 jobs:
-  dev:
+  deploy:
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
     steps:
     - name: Run validation
       run: |
@@ -33,16 +34,16 @@ jobs:
         echo ${{ inputs.port }}
         echo ${{ vars.SERVER}}
 
-  qa:
-    if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
-    runs-on: ubuntu-latest
-    environment: qa
-    steps:
-    - name: Run validation
-      run: |
-        echo "event name is:" ${{ github.event_name }} 
-        echo ${{ inputs.port }}
-        echo ${{ vars.SERVER}}
+  # qa:
+  #   if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
+  #   runs-on: ubuntu-latest
+  #   environment: ${{ inputs.environment }}
+  #   steps:
+  #   - name: Run validation
+  #     run: |
+  #       echo "event name is:" ${{ github.event_name }} 
+  #       echo ${{ inputs.port }}
+  #       echo ${{ vars.SERVER}}
 
 
 
