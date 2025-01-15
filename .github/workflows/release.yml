@@ -37,13 +37,13 @@ jobs:
 
         echo "Port selected is: ${PORT}"
         # If port is 'qa' and tags is empty, set a default tag.
-        if [[ "${PORT}" == "qa" && -z "${TAGS}" ]]; then
-          TAGS="default_qa_tag"
-          echo "No tag provided for qa port; using default: ${TAGS}"
+        if [[ "${TAGS}" == "qa" && -z "${PORT}" ]]; then
+          PORT="default_port_22"
+          echo "No port provided for qa; using default: ${PORT}"
         fi
         
-        # Export TAGS so that subsequent steps can use it.
-        echo "tags=${TAGS}" >> $GITHUB_ENV
+        # Export PORT so that subsequent steps can use it.
+        echo "port=${PORT}" >> $GITHUB_ENV
 
     - name: Run hello release
       run: |
@@ -53,4 +53,4 @@ jobs:
         else
           echo "Port: ${{ inputs.port }}"
         fi
-        echo "Tags: ${tags}"
+        echo "Port: ${port}"
