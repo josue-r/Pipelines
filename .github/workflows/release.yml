@@ -20,15 +20,15 @@ on:
       tags:
         type: string
       environment:
-        type: string   
+        type: string
 
 jobs:
   triage:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
-    - name: Run hello release
+    - name: Run validation
       run: |
-        # Export PORT so that subsequent steps can use it.
         echo ${{ inputs.port }}
         echo ${{ vars.SERVER}}
 
