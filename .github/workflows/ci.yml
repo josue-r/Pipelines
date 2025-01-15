@@ -2,12 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ release ]
 
 
 jobs:
-  triage:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Run hello ci
-      run: echo Hello, ci yaml
+  call-release-workflow:
+    uses: josue-r/Pipelines/.github/workflows/release.yml@release
+    secrets: inherit
+    with:
+      port: 4202
+      tags: "thistag"

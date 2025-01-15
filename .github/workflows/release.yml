@@ -1,15 +1,22 @@
 name: RELEASE
 
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
+  workflow_dispatch:
+    inputs:
+      port:
+        type: string
+      tags:
+        type: string
+  workflow_call:
+    inputs:
+      port:
+        type: string
+      tags:
+        type: string
 
 
 jobs:
   triage:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
     - name: Run hello release
