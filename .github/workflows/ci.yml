@@ -12,3 +12,4 @@ jobs:
     with:
       port: 4202
       tags: "thistag1"
+      environment: "dev"

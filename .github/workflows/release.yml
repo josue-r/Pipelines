@@ -1,22 +1,23 @@
 name: RELEASE
 
+## environments approach
 on:
   workflow_dispatch:
     inputs:
       tags:
+      port:
+        type: string
+      environment:
         type: choice
         options:
           - qa
-          - prod
-      port:
-        type: string
   workflow_call:
     inputs:
       port:
         type: string
       tags:
         type: string
-
+      environment:
 
 jobs:
   triage:
@@ -24,33 +25,64 @@ jobs:
     steps:
     - name: Run hello release
       run: |
-        # Check the inputs based on the event type.
-        # For workflow_dispatch, inputs are in github.event.inputs
-        # For workflow_call, they are accessible via inputs.
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          PORT="${{ github.event.inputs.port }}"
-          TAGS="${{ github.event.inputs.tags }}"
-        else
-          PORT="${{ inputs.port }}"
-          TAGS="${{ inputs.tags }}"
-        fi
-
-        echo "Tag selected is: ${TAGS}"
-        # If port is 'qa' and tags is empty, set a default tag.
-        if [[ "${TAGS}" == "qa" && -z "${PORT}" ]]; then
-          PORT="default_port_22"
-          echo "No port provided for qa; using default: ${PORT}"
-        fi
-        
         # Export PORT so that subsequent steps can use it.
-        echo "port=${PORT}" >> $GITHUB_ENV
+        echo ${{ inputs.port }}
+        echo ${{ vars.SERVER}}
 
-    - name: Run hello release
-      run: |
-        # Here, echo using the selected port and tags.
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          echo "Port github event: ${{ github.event.inputs.port }}"
-        else
-          echo "Port inputs: ${{ inputs.port }}"
-        fi
-        echo "Port regular: ${port}"
+
+
+## manual and reusable workflow approach
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       tags:
+#         type: choice
+#         options:
+#           - qa
+#           - prod
+#       port:
+#         type: string
+#   workflow_call:
+#     inputs:
+#       port:
+#         type: string
+#       tags:
+#         type: string
+
+
+# jobs:
+#   triage:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Run hello release
+#       run: |
+#         # Check the inputs based on the event type.
+#         # For workflow_dispatch, inputs are in github.event.inputs
+#         # For workflow_call, they are accessible via inputs.
+#         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+#           PORT="${{ github.event.inputs.port }}"
+#           TAGS="${{ github.event.inputs.tags }}"
+#         else
+#           PORT="${{ inputs.port }}"
+#           TAGS="${{ inputs.tags }}"
+#         fi
+
+#         echo "Tag selected is: ${TAGS}"
+#         # If port is 'qa' and tags is empty, set a default tag.
+#         if [[ "${TAGS}" == "qa" && -z "${PORT}" ]]; then
+#           PORT="default_port_22"
+#           echo "No port provided for qa; using default: ${PORT}"
+#         fi
+        
+#         # Export PORT so that subsequent steps can use it.
+#         echo "port=${PORT}" >> $GITHUB_ENV
+
+#     - name: Run hello release
+#       run: |
+#         # Here, echo using the selected port and tags.
+#         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+#           echo "Port github event: ${{ github.event.inputs.port }}"
+#         else
+#           echo "Port inputs: ${{ inputs.port }}"
+#         fi
+#         echo "Port regular: ${port}"
