@@ -23,10 +23,20 @@ on:
         type: string
 
 jobs:
-  triage:
-    #if: ${{ github.event_name == 'workflow_call' }} # || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
+  dev:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: dev
+    steps:
+    - name: Run validation
+      run: |
+        echo "event name is:" ${{ github.event_name }} 
+        echo ${{ inputs.port }}
+        echo ${{ vars.SERVER}}
+
+  qa:
+    if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
+    runs-on: ubuntu-latest
+    environment: qa
     steps:
     - name: Run validation
       run: |
