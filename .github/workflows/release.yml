@@ -12,7 +12,8 @@ on:
         type: choice
         options:
           - qa
-      workflow_call:
+          - dev
+  workflow_call:
     inputs:
       port:
         type: string
