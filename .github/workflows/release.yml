@@ -24,7 +24,7 @@ on:
 
 jobs:
   triage:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev' }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') || github.event_name == 'workflow_call' }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
