@@ -35,7 +35,7 @@ jobs:
           TAGS="${{ inputs.tags }}"
         fi
 
-        echo "Port selected is: ${PORT}"
+        echo "Tag selected is: ${TAGS}"
         # If port is 'qa' and tags is empty, set a default tag.
         if [[ "${TAGS}" == "qa" && -z "${PORT}" ]]; then
           PORT="default_port_22"
@@ -49,8 +49,8 @@ jobs:
       run: |
         # Here, echo using the selected port and tags.
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          echo "Port: ${{ github.event.inputs.port }}"
+          echo "Port github event: ${{ github.event.inputs.port }}"
         else
-          echo "Port: ${{ inputs.port }}"
+          echo "Port inputs: ${{ inputs.port }}"
         fi
-        echo "Port: ${port}"
+        echo "Port regular: ${port}"
