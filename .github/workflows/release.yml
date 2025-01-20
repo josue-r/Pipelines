@@ -35,7 +35,7 @@ jobs:
         echo "event name is:" ${{ github.event_name }} 
         echo ${{ inputs.port }}
         #echo ${{ vars.SERVER}}
-        echo ${{ fromJSON(vars.SERVER) }
+        echo ${{ fromJSON(vars.SERVER) }}
 
   # qa:
   #   if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
