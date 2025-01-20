@@ -27,12 +27,15 @@ jobs:
     if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    strategy:
+      matrix: ${{ fromJSON(vars.SERVER) }}
     steps:
     - name: Run validation
       run: |
         echo "event name is:" ${{ github.event_name }} 
         echo ${{ inputs.port }}
-        echo ${{ vars.SERVER}}
+        #echo ${{ vars.SERVER}}
+        echo ${{ fromJSON(vars.SERVER) }
 
   # qa:
   #   if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
