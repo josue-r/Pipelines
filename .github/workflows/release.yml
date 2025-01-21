@@ -26,7 +26,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      domains: ${{ steps.domains.outputs.qa_servers }}
+      qa_servers: ${{ steps.qa_servers.outputs.qa_servers }}
      - name: Set up qa servers
         id: qa_servers
         run: |
@@ -35,6 +35,7 @@ jobs:
 
   deploy:
     if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
+    needs: build
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     strategy:
