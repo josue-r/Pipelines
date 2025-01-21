@@ -23,19 +23,30 @@ on:
         type: string
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      domains: ${{ steps.domains.outputs.qa_servers }}
+     - name: Set up qa servers
+        id: qa_servers
+        run: |
+          qa_servers=$(echo ${{ vars.SERVER }} | jq -Rrc 'split(",")')
+          echo "qa_servers=$qa_servers" >> "$GITHUB_OUTPUT"
+
   deploy:
     if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     strategy:
-      matrix: ${{ fromJSON(vars.SERVER) }}
+      matrix: ${{ fromJSON(needs.build.outputs.qa_servers) }}
     steps:
     - name: Run validation
       run: |
         echo "event name is:" ${{ github.event_name }} 
         echo ${{ inputs.port }}
+        echo "Current QA Server (from matrix): ${{ matrix }}"
         #echo ${{ vars.SERVER}}
-        #echo ${{ fromJSON(vars.SERVER) }}
+
 
   # qa:
   #   if: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
