@@ -27,7 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       qa_servers: ${{ steps.qa_servers.outputs.qa_servers }}
-     - name: Set up qa servers
+    steps:
+      - name: Set up qa servers
         id: qa_servers
         run: |
           qa_servers=$(echo ${{ vars.SERVER }} | jq -Rrc 'split(",")')
@@ -41,12 +42,12 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.build.outputs.qa_servers) }}
     steps:
-    - name: Run validation
-      run: |
-        echo "event name is:" ${{ github.event_name }} 
-        echo ${{ inputs.port }}
-        echo "Current QA Server (from matrix): ${{ matrix }}"
-        #echo ${{ vars.SERVER}}
+      - name: Run validation
+        run: |
+          echo "event name is: ${{ github.event_name }}"
+          echo "port: ${{ inputs.port }}"
+          echo "Current QA Server (from matrix): ${{ matrix }}"
+          # echo ${{ vars.SERVER }}
 
 
   # qa:
