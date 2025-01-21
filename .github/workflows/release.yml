@@ -25,6 +25,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     outputs:
       qa_servers: ${{ steps.qa_servers.outputs.qa_servers }}
     steps:
