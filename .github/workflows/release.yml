@@ -50,6 +50,7 @@ jobs:
           echo "event name is: ${{ github.event_name }}"
           echo "port: ${{ inputs.port }}"
           echo "Current QA Server (from matrix): ${{ matrix.server }}"
+          echo "${{ matrix.server }}.corp.valvoline.com"
           # echo ${{ vars.SERVER }}
 
 
