@@ -42,13 +42,13 @@ jobs:
     environment: ${{ inputs.environment }}
     strategy:
       matrix:
-        include: ${{ fromJSON(needs.build.outputs.qa_servers) }}
+        server: ${{ fromJSON(needs.build.outputs.qa_servers) }}
     steps:
       - name: Run validation
         run: |
           echo "event name is: ${{ github.event_name }}"
           echo "port: ${{ inputs.port }}"
-          echo "Current QA Server (from matrix): ${{ matrix.include }}"
+          echo "Current QA Server (from matrix): ${{ matrix.server }}"
           # echo ${{ vars.SERVER }}
 
 
