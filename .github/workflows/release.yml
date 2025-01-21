@@ -33,6 +33,7 @@ jobs:
         run: |
           qa_servers=$(echo ${{ vars.SERVER }} | jq -Rrc 'split(",")')
           echo "qa_servers=$qa_servers" >> "$GITHUB_OUTPUT"
+          echo $qa_servers
 
   deploy:
     if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment != 'dev') }}
@@ -40,13 +41,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     strategy:
-      matrix: ${{ fromJSON(needs.build.outputs.qa_servers) }}
+      matrix:
+        include: ${{ fromJSON(needs.build.outputs.qa_servers) }}
     steps:
       - name: Run validation
         run: |
           echo "event name is: ${{ github.event_name }}"
           echo "port: ${{ inputs.port }}"
-          echo "Current QA Server (from matrix): ${{ matrix }}"
+          echo "Current QA Server (from matrix): ${{ matrix.include }}"
           # echo ${{ vars.SERVER }}
 
 
